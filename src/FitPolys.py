@@ -13,6 +13,7 @@ def get_poly_points(mapping, df, row_index):
         coords_dict[feature] = []
         degrees_dict[feature] = []
         for point in mapping[feature]:
+            # Degrees for each feature has been added to FacePolyMappings.data
             if (point.startswith("deg:")):
                 print(point)
                 degrees_dict[feature].append(int(point[5:]))
@@ -42,6 +43,7 @@ def graph_poly(coefficients, x_values):
 
 
 #TODO Make the degree variable, defined in the mappings file. Upper lip top should be third order I think?
+#DONE
 def graph_polys(feature_points, degrees):
     for feature in feature_points:
         x_vals = []
