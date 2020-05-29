@@ -1,6 +1,6 @@
 # Open the file containing polynomial groupings and store results
 def extract_poly_mappings():
-    f = open("FacePolyMappings.data", "r")
+    f = open("./FacePolyMappings.data", "r")
     field_name = ""
     mappings = dict()
     for line in f:
@@ -14,7 +14,5 @@ def extract_poly_mappings():
             mappings[field_name] = []
         else:
             mappings[field_name].append(line.strip())
-    
-    print(mappings)
     return mappings
 
