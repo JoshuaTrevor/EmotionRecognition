@@ -7,17 +7,21 @@ from PolySetup import extract_poly_mappings
 def get_poly_points(mapping, df, row_index):
     # Dict that maps a polynomial label to a set of points
     coords_dict = dict()
+    points_dict = dict()
 
     for feature in mapping:
         coords_dict[feature] = []
         for point in mapping[feature]:
-            x_col = point + "_x"
-            y_col = point + "_y"
-            x = df[x_col].iloc[row_index]
-            y = df[y_col].iloc[row_index]
-            pair = [x, y]
-            coords_dict[feature].append(pair)
-    return coords_dict
+            if (str.startswith(point, "deg:")):
+                points_dict[feature].append(point[5:])
+            else:
+                x_col = point + "_x"
+                y_col = point + "_y"
+                x = df[x_col].iloc[row_index]
+                y = df[y_col].iloc[row_index]
+                pair = [x, y]
+                coords_dict[feature].append(pair)
+    return coords_dict, points_dict
 
 
 

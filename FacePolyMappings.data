@@ -13,6 +13,7 @@ mouth_lower_lip_right_contour3
 mouth_lower_lip_right_contour2
 mouth_left_corner
 mouth_right_corner
+deg: 2
 
 --| lower_lip_upper |--
 mouth_left_corner
@@ -20,6 +21,8 @@ mouth_right_corner
 mouth_lower_lip_left_contour1
 mouth_lower_lip_right_contour1
 mouth_lower_lip_top
+deg: 2
+
 # (Alternative endpoints to try. Mouth corner is potentially misleading and maybe shouldn't be part of lip curves)
 # Should probably try with and without and then compare
 # mouth_lower_lip_right_contour2
@@ -33,6 +36,8 @@ mouth_upper_lip_right_contour2
 mouth_upper_lip_right_contour3
 mouth_left_corner
 mouth_right_corner
+deg: 2
+
 
 # I think this should be a third degree polynomial maybe
 --| upper_lip_upper |--
@@ -41,6 +46,8 @@ mouth_right_corner
 mouth_upper_lip_left_contour1
 mouth_upper_lip_right_contour1
 mouth_upper_lip_top
+deg: 2
+
 
 ##########################################################
 #                                                        #
@@ -54,6 +61,8 @@ left_eye_left_corner
 left_eye_lower_left_quarter
 left_eye_lower_right_quarter
 left_eye_right_corner
+deg: 2
+
 
 --| right_eye_lower |--
 right_eye_bottom
@@ -61,6 +70,8 @@ right_eye_left_corner
 right_eye_lower_left_quarter
 right_eye_lower_right_quarter
 right_eye_right_corner
+deg: 2
+
 
 --| left_eye_upper |--
 left_eye_top
@@ -68,6 +79,8 @@ left_eye_left_corner
 left_eye_upper_left_quarter
 left_eye_upper_right_quarter
 left_eye_right_corner
+deg: 2
+
 
 --| right_eye_upper |--
 right_eye_top
@@ -75,6 +88,8 @@ right_eye_left_corner
 right_eye_upper_left_quarter
 right_eye_upper_right_quarter
 right_eye_right_corner
+deg: 2
+
 
 --| left_eyebrow_lower |--
 left_eyebrow_left_corner
@@ -82,6 +97,8 @@ left_eyebrow_right_corner
 left_eyebrow_lower_middle
 left_eyebrow_lower_left_quarter
 left_eyebrow_lower_right_quarter
+deg: 2
+
 
 --| right_eyebrow_lower |--
 right_eyebrow_left_corner
@@ -89,6 +106,8 @@ right_eyebrow_right_corner
 right_eyebrow_lower_middle
 right_eyebrow_lower_left_quarter
 right_eyebrow_lower_right_quarter
+deg: 2
+
 
 --| left_eyebrow_upper |--
 left_eyebrow_left_corner
@@ -96,6 +115,8 @@ left_eyebrow_right_corner
 left_eyebrow_upper_middle
 left_eyebrow_upper_left_quarter
 left_eyebrow_upper_right_quarter
+deg: 2
+
 
 --| right_eyebrow_upper |--
 right_eyebrow_left_corner
@@ -103,6 +124,8 @@ right_eyebrow_right_corner
 right_eyebrow_upper_middle
 right_eyebrow_upper_left_quarter
 right_eyebrow_upper_right_quarter
+deg: 2
+
 
 
 ##########################################################
@@ -117,6 +140,8 @@ nose_left
 nose_right
 nose_contour_left3
 nose_contour_right3
+deg: 2
+
 
 ##########################################################
 #                                                        #
@@ -138,5 +163,7 @@ contour_left5
 contour_right5
 contour_left4
 contour_right4
+deg: 2
+
 # contour_left3 # After some faces begin to curve inwards they can no longer be fit perfectly by a polynomial 
 # contour_right3 # because each x must be connected to exactly 1 y value. The number of landmarks considered can be tweaked later
