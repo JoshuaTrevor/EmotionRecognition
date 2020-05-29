@@ -1,0 +1,36 @@
+# This file contains a list of poly groupings (the points which make up each curve)
+--| bottom_lip_lower |--
+mouth_lower_lip_bottom
+mouth_lower_lip_left_contour2
+mouth_lower_lip_left_contour3
+mouth_lower_lip_right_contour3
+mouth_lower_lip_right_contour2
+mouth_left_corner
+mouth_right_corner
+
+--| lower_lip_upper |--
+mouth_left_corner
+mouth_right_corner
+mouth_lower_lip_left_contour1
+mouth_lower_lip_right_contour1
+mouth_lower_lip_top
+# (Alternative endpoints to try. Mouth corner is potentially misleading and maybe shouldn't be part of lip curves)
+# Should probably try with and without and then compare
+# mouth_lower_lip_right_contour2
+# mouth_lower_lip_left_contour2
+
+--| upper_lip_lower |--
+mouth_upper_lip_bottom
+mouth_upper_lip_left_contour2
+mouth_upper_lip_left_contour3
+mouth_upper_lip_right_contour2
+mouth_upper_lip_right_contour3
+mouth_left_corner
+mouth_right_corner
+
+--| upper_lip_upper |--
+mouth_left_corner
+mouth_right_corner
+mouth_upper_lip_left_contour1
+mouth_upper_lip_right_contour1
+mouth_upper_lip_top
