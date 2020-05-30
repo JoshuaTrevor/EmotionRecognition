@@ -81,6 +81,9 @@ def draw_face(df, row_index, show_overlap=False):
         graph_poly(poly[0], poly[1])
 
     plt.gca().set_aspect('equal', adjustable='box')
+    
+    plt.title(df.expression_id[row_index])
+
     plt.show()
 
 
