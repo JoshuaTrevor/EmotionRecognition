@@ -1,9 +1,31 @@
 import FitPolys
 import pandas as pd
+import sys
+import random
 
-df_orig = pd.read_csv("./dataset.csv")
+df = pd.read_csv("./dataset.csv")
+# Ideas to try to improve results:
+# Normalise poly values, eg take the log of a in ax^2 + bx+ c
+# Remove some of the polys which match less closely, like upper lip or upper eyebrow
+# Take the difference from the neutral expression
 
-# Draw the first 5 faces with polynomials overlayed
-for i in range(0, 5):
-    FitPolys.draw_face(df_orig, i)
-# FitPolys.get_colsw("nose", df_orig)
+# If no params, draw 5 random faces
+if len(sys.argv) == 1:
+    for i in range(0, 5):
+        df_length = len(df.iloc[0])
+        FitPolys.draw_face(df, random.randrange(0, (df_length-1)+1))
+
+# If parameter is a number, draw that number of random images.
+elif len(sys.argv) > 1 and sys.argv[1].isdigit():
+    for i in range(0, int(sys.argv[1])):
+        df_length = len(df.iloc[0])
+        FitPolys.draw_face(df, random.randrange(0, (df_length-1)+1))
+
+# If executed with a parameter containing "create", create a new polynomial'd csv
+elif len(sys.argv) > 1 and "create" in sys.argv[1].lower():
+    print("Creating new csv...")
+    FitPolys.create_poly_csv(df)
+    print("Done")
+
+else:
+    print("Invalid parameter(s)")
