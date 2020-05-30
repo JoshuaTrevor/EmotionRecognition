@@ -7,24 +7,17 @@ from PolySetup import extract_poly_mappings
 def get_poly_points(mapping, df, row_index):
     # Dict that maps a polynomial label to a set of points
     coords_dict = dict()
-    degrees_dict = dict()
 
     for feature in mapping:
         coords_dict[feature] = []
-        degrees_dict[feature] = []
         for point in mapping[feature]:
-            # Degrees for each feature has been added to FacePolyMappings.data
-            if (point.startswith("deg:")):
-                degrees_dict[feature].append(int(point[5:]))
-            else:
-                x_col = point + "_x"
-                y_col = point + "_y"
-                x = df[x_col].iloc[row_index]
-                y = df[y_col].iloc[row_index]
-                pair = [x, y]
-                coords_dict[feature].append(pair)
-    return coords_dict, degrees_dict
-
+            x_col = point + "_x"
+            y_col = point + "_y"
+            x = df[x_col].iloc[row_index]
+            y = df[y_col].iloc[row_index]
+            pair = [x, y]
+            coords_dict[feature].append(pair)
+    return coords_dict
 
 
 # Get columns containing a substring in their heading.
@@ -40,9 +33,7 @@ def graph_poly(coefficients, x_values):
     plt.plot(x, poly, 'r-')
 
 
-#TODO Make the degree variable, defined in the mappings file. Upper lip top should be third order I think?
-#DONE
-def get_polys(feature_points, degrees):
+def get_polys(feature_points):
     polys = []
     for feature in feature_points:
         x_vals = []
@@ -52,7 +43,7 @@ def get_polys(feature_points, degrees):
             y_vals.append(500-point[1])
         
         if(len(x_vals) > 0 and len(x_vals) == len(y_vals)):
-            polynomial_coeffs = np.polyfit(x_vals, y_vals, deg=degrees[feature][0])
+            polynomial_coeffs = np.polyfit(x_vals, y_vals, deg=2)
             sorted_x = np.sort(x_vals)
             lower_bound = sorted_x[0]
             upper_bound = sorted_x[-1]
@@ -79,12 +70,62 @@ def graph_points(df, row_index):
 
 def draw_face(df, row_index):
     mapping = extract_poly_mappings()
-    points, degrees = get_poly_points(mapping, df, row_index)
+    points = get_poly_points(mapping, df, row_index)
     graph_points(df, row_index)
-    polys = get_polys(points, degrees)
+    polys = get_polys(points)
 
     for poly in polys:
         graph_poly(poly[0], poly[1])
 
     plt.gca().set_aspect('equal', adjustable='box')
     plt.show()
+
+
+# Get a list of points which can be replaced by polygons
+def get_replaced_points(mapping):
+    # Flatten map values
+    obselete_cols = set()
+    for key in mapping:
+        for value in mapping[key]:
+            obselete_cols.add(value+"_x")
+            obselete_cols.add(value+"_y")
+    return obselete_cols
+
+
+def replace_points(df):
+    mapping = extract_poly_mappings()
+
+    # Remove points which are replaced by polys
+    obselete_cols = get_replaced_points(mapping)
+    reduced_df = df.drop(obselete_cols, axis=1)
+
+    poly_df = create_poly_df(df, mapping)
+
+    return pd.concat([reduced_df, poly_df], axis=1, sort=False)
+    
+
+def create_poly_csv(df):
+    poly_df = replace_points(df)
+    poly_df.to_csv("output.csv")
+
+
+def flatten_poly_attribs(poly):
+    attribs = []
+    for elem in poly:
+        for sub_elem in elem:
+            attribs.append(sub_elem)
+    return attribs
+
+def create_poly_df(df, mapping):
+    rows = []
+
+    for row_index in range(0, len(df.iloc[0])):
+        row_poly_attribs = [] # An unordered 1d list of poly coeffs and bounds
+        points = get_poly_points(mapping, df, row_index)
+        polys = get_polys(points)
+        for poly in polys:
+            for attrib in flatten_poly_attribs(poly):
+                row_poly_attribs.append(attrib)
+        rows.append(row_poly_attribs)
+    
+    return pd.DataFrame(rows)
