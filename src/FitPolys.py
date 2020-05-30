@@ -51,7 +51,7 @@ def get_polys(feature_points):
     return polys
         
 
-def graph_points(df, row_index):
+def graph_points(df, row_index, show_overlap=False):
     x_col_list = []
     y_col_list = []
     for col in df.columns:
@@ -62,16 +62,19 @@ def graph_points(df, row_index):
 
     x_vals = []
     y_vals = []
+    mapping = extract_poly_mappings()
     for x_col, y_col in zip(x_col_list, y_col_list):
+        if(not show_overlap and x_col in get_replaced_points(mapping)):
+            continue
         x_vals.append(df[x_col].iloc[row_index])
         y_vals.append(500-df[y_col].iloc[row_index])
     plt.scatter(x_vals, y_vals, s=2)
     
 
-def draw_face(df, row_index):
+def draw_face(df, row_index, show_overlap=False):
     mapping = extract_poly_mappings()
     points = get_poly_points(mapping, df, row_index)
-    graph_points(df, row_index)
+    graph_points(df, row_index, show_overlap)
     polys = get_polys(points)
 
     for poly in polys:
@@ -119,7 +122,7 @@ def flatten_poly_attribs(poly):
 def create_poly_df(df, mapping):
     rows = []
 
-    for row_index in range(0, len(df.iloc[0])):
+    for row_index in range(0, len(df.index)):
         row_poly_attribs = [] # An unordered 1d list of poly coeffs and bounds
         points = get_poly_points(mapping, df, row_index)
         polys = get_polys(points)

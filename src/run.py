@@ -12,14 +12,14 @@ df = pd.read_csv("./dataset.csv")
 # If no params, draw 5 random faces
 if len(sys.argv) == 1:
     for i in range(0, 5):
-        df_length = len(df.iloc[0])
-        FitPolys.draw_face(df, random.randrange(0, (df_length-1)+1))
+        df_length = len(df.index)
+        FitPolys.draw_face(df, random.randrange(0, (df_length-1)+1), show_overlap=False)
 
 # If parameter is a number, draw that number of random images.
 elif len(sys.argv) > 1 and sys.argv[1].isdigit():
     for i in range(0, int(sys.argv[1])):
-        df_length = len(df.iloc[0])
-        FitPolys.draw_face(df, random.randrange(0, (df_length-1)+1))
+        df_length = len(df.index)
+        FitPolys.draw_face(df, random.randrange(0, (df_length-1)+1), show_overlap=False)
 
 # If executed with a parameter containing "create", create a new polynomial'd csv
 elif len(sys.argv) > 1 and "create" in sys.argv[1].lower():
