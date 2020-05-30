@@ -7,32 +7,28 @@ from sklearn.metrics import accuracy_score
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 
-#dataset = pd.read_csv("dataset.csv", sep = ",")
-dataset = pd.read_csv("output_scaled.csv", sep = ",")
-dimensions = dataset[["height", "width", "left", "top"]]
+original_dataset = pd.read_csv("dataset.csv", sep = ",")
+dataset = pd.read_csv("output.csv", sep = ",")
+dimensions = original_dataset[["height", "width", "left", "top"]]
 
-# for col in dataset:
-#     if col.endswith("x"):
-#         dataset[col] = ((dataset[col]-dataset["left"]) / dataset["width"])
-#     if col.endswith("y"):
-#         dataset[col] = ((dataset[col]-dataset["top"]) / dataset["height"])
+for col in original_dataset:
+    if col.endswith("x"):
+        original_dataset[col] = ((original_dataset[col]-original_dataset["left"]) / original_dataset["width"])
+    if col.endswith("y"):
+        original_dataset[col] = ((original_dataset[col]-original_dataset["top"]) / original_dataset["height"])
         
-dataset.to_csv("scaled_dataset.csv")
+# dataset.to_csv("scaled_dataset.csv")
 
+original_dataset = original_dataset.drop(["expression_id", "height", "width", "left", "top"], axis = 1)
 dataset = dataset.drop(["expression_id", "height", "width", "left", "top"], axis = 1)
 
 # for n, val in enumerate(["Anger", "Contempt", "Disgust", "Fear", "Happy", "Sad", "Surprise"], start = 1):
 #     dataset.truth_value = dataset.truth_value.replace(n, val)
 
-dataset.replace([np.inf, -np.inf], np.nan)
-dataset.fillna(0)
-
-print(str(type(dataset.truth_value[0])))
-# print(str(type(dataset["Unnamed: 0.1"][0])))
-print(str(dataset.shape))
+original_dataset
 dataset
 
-features = dataset.drop(["id", "truth_value"], axis = 1)
+original_features = original_dataset.drop(["id", "truth_value"], axis = 1)
 features = dataset.drop(["Unnamed: 0", "Unnamed: 0.1", "truth_value"], axis = 1)
 value = dataset[["truth_value"]]
 

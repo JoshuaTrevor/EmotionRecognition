@@ -3,7 +3,7 @@ import pandas as pd
 import sys
 import random
 
-df = pd.read_csv("./dataset.csv")
+df = pd.read_csv("./scaled-dataset.csv")
 # Ideas to try to improve results:
 # Normalise poly values, eg take the log of a in ax^2 + bx+ c
 # Remove some of the polys which match less closely, like upper lip or upper eyebrow
