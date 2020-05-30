@@ -1,4 +1,5 @@
 import FitPolys
+import TestData
 import pandas as pd
 import sys
 import random
@@ -16,16 +17,19 @@ if len(sys.argv) == 1:
         FitPolys.draw_face(df, random.randrange(0, (df_length-1)+1), show_overlap=False)
 
 # If parameter is a number, draw that number of random images.
-elif len(sys.argv) > 1 and sys.argv[1].isdigit():
+elif sys.argv[1].isdigit():
     for i in range(0, int(sys.argv[1])):
         df_length = len(df.index)
         FitPolys.draw_face(df, random.randrange(0, (df_length-1)+1), show_overlap=False)
 
 # If executed with a parameter containing "create", create a new polynomial'd csv
-elif len(sys.argv) > 1 and "create" in sys.argv[1].lower():
+elif "create" in sys.argv[1].lower():
     print("Creating new csv...")
     FitPolys.create_poly_csv(df)
     print("Done")
+
+elif "train" in sys.argv[1].lower():
+    TestData.train()
 
 else:
     print("Invalid parameter(s)")
