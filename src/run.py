@@ -4,7 +4,7 @@ import pandas as pd
 import sys
 import random
 
-df = pd.read_csv("./scaled_dataset.csv")
+df = pd.read_csv("./training_csvs/scaled_dataset.csv")
 # Ideas to try to improve results:
 # Normalise poly values, eg take the log of a in ax^2 + bx+ c
 # Remove some of the polys which match less closely, like upper lip or upper eyebrow
@@ -29,7 +29,18 @@ elif "create" in sys.argv[1].lower():
     print("Done")
 
 elif "train" in sys.argv[1].lower():
-    TestData.train()
+    if(len(sys.argv) == 4):
+        if not sys.argv[3].isdigit():
+            print("The last parameter should be iteration number. eg run.py train dataset_name iterations")
+            exit()
+        if not sys.argv[2].endswith(".csv"):
+            file_dir = sys.argv[2] + ".csv"
+        else:
+            file_dir = sys.argv[2]
+        for i in range(0, int(sys.argv[3])):
+            TestData.train("./training_csvs/{}".format(file_dir))
+    else:
+        TestData.train()
 
 else:
     print("Invalid parameter(s)")

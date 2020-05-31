@@ -112,7 +112,7 @@ def replace_points(df):
 
 def create_poly_csv(df):
     poly_df = replace_points(df)
-    poly_df.to_csv("output.csv")
+    poly_df.to_csv("./training_csvs/poly_output.csv")
 
 
 def flatten_poly_attribs(poly):

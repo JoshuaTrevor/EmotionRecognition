@@ -1,0 +1,2 @@
+Acc: 77.3913043478261% Attempts: 5 Dataset: 'training_csvs/scaled_dataset.csv'
+Acc: 82.33695652173913% Attempts: 8 Dataset: 'training_csvs/poly_output.csv'

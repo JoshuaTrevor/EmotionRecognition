@@ -6,9 +6,10 @@ from sklearn.metrics import r2_score
 from sklearn.metrics import accuracy_score
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
+from datetime import datetime
 
 #dataset = pd.read_csv("dataset.csv", sep = ",")
-def train(dataset_path="./scaled_dataset.csv"):
+def train(dataset_path="./training_csvs/poly_output.csv"):
     dataset = pd.read_csv(dataset_path, sep = ",")
     dimensions = dataset[["height", "width", "left", "top"]]
 
@@ -24,7 +25,7 @@ def train(dataset_path="./scaled_dataset.csv"):
         print("couldn't drop")
     value = dataset[["truth_value"]]
 
-    train_x, test_x, train_y, test_y = train_test_split(features, value, test_size = 0.20, random_state = 42)
+    train_x, test_x, train_y, test_y = train_test_split(features, value, test_size = 0.20)
 
     best_crit = ""
     best_depth = 0
@@ -34,10 +35,10 @@ def train(dataset_path="./scaled_dataset.csv"):
     counter = 0
     print("Optimising decision tree parameters")
     for crit in ["gini", "entropy"]:
-        for depth in range(5, 50):
+        for depth in range(5, 25):
             for min_sam in [2]:
-                for max_feat in range(25, 75):
-                    dtc = DecisionTreeClassifier(criterion = crit, max_depth = depth, min_samples_split = min_sam, max_features = max_feat, random_state = 69)
+                for max_feat in range(30, 70):
+                    dtc = DecisionTreeClassifier(criterion = crit, max_depth = depth, min_samples_split = min_sam, max_features = max_feat)
                     model = dtc.fit(train_x, train_y)
                     predictions = model.predict(test_x)
                     score = accuracy_score(test_y, predictions)
@@ -54,10 +55,51 @@ def train(dataset_path="./scaled_dataset.csv"):
     print("Best Depth: " + str(best_depth))
     print("Best Min Sample Split: " + str(best_min_sam_split))
     print("Best Max Features: " + str(best_max_feat) + "\n")
-    log_result()
+    log_result(best_score, dataset_path)
 
 
-def log_result():
-    # Save result as entry to log file
-    # Store: Accuracy, date recorded, the name of the csv used and any other parameters applied to the data     
-    print("log not implemented")
+def log_result(score, dataset_path):
+    acc = str(score * 100) + "%"
+    dataset = dataset_path[2:]
+    date = datetime.now()
+    f = open("log_file.txt", "a")
+    f.write("Acc: {}% Dataset: '{}' Date: {}\n".format(acc,dataset,date))
+    f.close()
+    update_totals()
+
+
+def update_totals():
+    f = open("log_file.txt", "r")
+    scores = dict()
+    for line in f:
+        if(len(line) > 10):
+            # Get the dataset of the entry
+            spl = line.split("Dataset: '")[1]
+            dataset = spl.split("'")[0]
+
+            # Get the accuracy of the entry
+            spl = line.split("Acc: ")[1]
+            acc = float(spl.split("%")[0])
+
+            # Associate acc with dataset
+            if dataset not in scores:
+                scores[dataset] = [acc]
+            else:
+                scores[dataset].append(acc)
+    f.close()
+
+    new_results = []
+    acc_count_dict = dict()
+
+    for dataset in scores:
+        count = len(scores[dataset])
+        avg_acc = np.mean(scores[dataset])
+        new_results.append("Acc: {}% Attempts: {} Dataset: '{}'\n".format(avg_acc, count, dataset))
+        
+
+    f = open("results.txt", "w")
+    f.writelines(new_results)
+    
+
+
+
