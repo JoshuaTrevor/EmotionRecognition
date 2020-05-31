@@ -4,7 +4,8 @@ import pandas as pd
 import sys
 import random
 
-df = pd.read_csv("./training_csvs/scaled_dataset.csv")
+dataset_path = "./training_csvs/scaled_dataset.csv"
+df = pd.read_csv(dataset_path)
 # Ideas to try to improve results:
 # Normalise poly values, eg take the log of a in ax^2 + bx+ c
 # Remove some of the polys which match less closely, like upper lip or upper eyebrow
@@ -25,7 +26,8 @@ elif sys.argv[1].isdigit():
 # If executed with a parameter containing "create", create a new polynomial'd csv
 elif "create" in sys.argv[1].lower():
     print("Creating new csv...")
-    FitPolys.create_poly_csv(df)
+    scaled = "scaled" in dataset_path
+    FitPolys.create_poly_csv(df, scaled)
     print("Done")
 
 elif "train" in sys.argv[1].lower():

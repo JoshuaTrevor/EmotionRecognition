@@ -110,9 +110,12 @@ def replace_points(df):
     return pd.concat([reduced_df, poly_df], axis=1, sort=False)
     
 
-def create_poly_csv(df):
+def create_poly_csv(df, scaled):
     poly_df = replace_points(df)
-    poly_df.to_csv("./training_csvs/poly_output.csv")
+    if scaled:
+        poly_df.to_csv("./training_csvs/scaled_poly_output.csv")
+    else:
+        poly_df.to_csv("./training_csvs/poly_output.csv")
 
 
 def flatten_poly_attribs(poly):
