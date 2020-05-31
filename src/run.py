@@ -37,9 +37,30 @@ elif "train" in sys.argv[1].lower():
             
             for f in os.listdir("./training_csvs/"):
                 print("\nTraining iteration: {} Dataset: {}".format(i, f))
-                TestData.train("./training_csvs/" + f)
+                TestData.train("./training_csvs/" + f, custom_tree=False)
     else:
-        TestData.train()
+        TestData.train(custom_tree=False)
 
+# Calculate the truth value distribution and performance of a random agent
+elif "dist" in sys.argv[1].lower():
+    ma = dict()
+    for elem in df["truth_value"]:
+        if elem in ma:
+            ma[elem] = ma[elem] + 1
+        else:
+            ma[elem] = 1
+    sorted_keys = sorted(ma)
+    for key in sorted_keys:
+        print("{} - {}".format(key, ma[key]))
+
+    final = 0
+    correct_guess = 0
+    for i in range(0, len(df.index)):
+        
+        random_guess = random.randrange(1, 7)
+        if int(round(random_guess)) == int(round(df.iloc[i]["truth_value"])):
+            correct_guess += 1
+        final = i
+    print("{}/{} correct with random".format(correct_guess, final))
 else:
     print("Invalid parameter(s)")

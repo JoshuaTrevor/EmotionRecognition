@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from datetime import datetime
 
 #dataset = pd.read_csv("dataset.csv", sep = ",")
-def train(dataset_path="./training_csvs/poly_output.csv"):
+def train(dataset_path="./training_csvs/poly_output.csv", custom_tree=True):
     dataset = pd.read_csv(dataset_path, sep = ",")
     dimensions = dataset[["height", "width", "left", "top"]]
 
@@ -37,28 +37,36 @@ def train(dataset_path="./training_csvs/poly_output.csv"):
     best_max_feat = 0
     best_score = 0
     counter = 0
-    print("Optimising decision tree parameters")
-    for crit in ["gini", "entropy"]:
-        for depth in range(5, 50):
-            for min_sam in [2]:
-                for max_feat in range(25, 75):
-                    dtc = DecisionTreeClassifier(criterion = crit, max_depth = depth, min_samples_split = min_sam, max_features = max_feat)
-                    model = dtc.fit(train_x, train_y)
-                    predictions = model.predict(test_x)
-                    score = accuracy_score(test_y, predictions)
-                    if score > best_score:
-                        best_score = score
-                        best_crit = crit
-                        best_depth = depth
-                        best_min_sam_split = min_sam
-                        best_max_feat = max_feat
-                counter+=1
-                # print("Iteration: {}/90 Best accuracy: {}%".format(counter, best_score*100))
-    print("Best Score: " + str(best_score))
-    # print("Best Crit: " + str(best_crit))
-    # print("Best Depth: " + str(best_depth))
-    # print("Best Min Sample Split: " + str(best_min_sam_split))
-    # print("Best Max Features: " + str(best_max_feat) + "\n")
+    if custom_tree:
+        print("Optimising decision tree parameters")
+        for crit in ["gini", "entropy"]:
+            for depth in range(5, 50):
+                for min_sam in [2]:
+                    for max_feat in range(25, 75):
+                        dtc = DecisionTreeClassifier(criterion = crit, max_depth = depth, min_samples_split = min_sam, max_features = max_feat)
+                        model = dtc.fit(train_x, train_y)
+                        predictions = model.predict(test_x)
+                        score = accuracy_score(test_y, predictions)
+                        if score > best_score:
+                            best_score = score
+                            best_crit = crit
+                            best_depth = depth
+                            best_min_sam_split = min_sam
+                            best_max_feat = max_feat
+                    counter+=1
+                    # print("Iteration: {}/90 Best accuracy: {}%".format(counter, best_score*100))
+        print("Best Score: " + str(best_score))
+        print("Best Crit: " + str(best_crit))
+        print("Best Depth: " + str(best_depth))
+        print("Best Min Sample Split: " + str(best_min_sam_split))
+        print("Best Max Features: " + str(best_max_feat) + "\n")
+    else:
+        print("Using consistent parameters")
+        dtc = DecisionTreeClassifier(criterion = "entropy", min_samples_split = 2, max_features = 5)
+        model = dtc.fit(train_x, train_y)
+        predictions = model.predict(test_x)
+        best_score = accuracy_score(test_y, predictions)
+        print(best_score)
     log_result(best_score, dataset_path)
 
 
