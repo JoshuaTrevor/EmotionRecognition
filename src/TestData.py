@@ -18,11 +18,15 @@ def train(dataset_path="./training_csvs/poly_output.csv"):
     dataset.replace([np.inf, -np.inf], np.nan)
     dataset.fillna(0)
 
-    features = dataset.drop(["id", "truth_value"], axis = 1)
     try:
-        features = dataset.drop(["Unnamed: 0", "Unnamed: 0.1", "truth_value"], axis = 1)
+        features = dataset.drop(["id", "truth_value"], axis = 1)
     except:
-        print("couldn't drop")
+        features = dataset.drop(["truth_value"], axis = 1)
+    try:
+        features = features.drop(["Unnamed: 0", "Unnamed: 0.1", "truth_value"], axis = 1)
+    except:
+        #print("couldn't drop")
+        None
     value = dataset[["truth_value"]]
 
     train_x, test_x, train_y, test_y = train_test_split(features, value, test_size = 0.20)
@@ -35,9 +39,9 @@ def train(dataset_path="./training_csvs/poly_output.csv"):
     counter = 0
     print("Optimising decision tree parameters")
     for crit in ["gini", "entropy"]:
-        for depth in range(5, 25):
+        for depth in range(5, 50):
             for min_sam in [2]:
-                for max_feat in range(30, 70):
+                for max_feat in range(25, 75):
                     dtc = DecisionTreeClassifier(criterion = crit, max_depth = depth, min_samples_split = min_sam, max_features = max_feat)
                     model = dtc.fit(train_x, train_y)
                     predictions = model.predict(test_x)
@@ -49,12 +53,12 @@ def train(dataset_path="./training_csvs/poly_output.csv"):
                         best_min_sam_split = min_sam
                         best_max_feat = max_feat
                 counter+=1
-                print("Iteration: {}/90 Best accuracy: {}%".format(counter, best_score*100))
+                # print("Iteration: {}/90 Best accuracy: {}%".format(counter, best_score*100))
     print("Best Score: " + str(best_score))
-    print("Best Crit: " + str(best_crit))
-    print("Best Depth: " + str(best_depth))
-    print("Best Min Sample Split: " + str(best_min_sam_split))
-    print("Best Max Features: " + str(best_max_feat) + "\n")
+    # print("Best Crit: " + str(best_crit))
+    # print("Best Depth: " + str(best_depth))
+    # print("Best Min Sample Split: " + str(best_min_sam_split))
+    # print("Best Max Features: " + str(best_max_feat) + "\n")
     log_result(best_score, dataset_path)
 
 

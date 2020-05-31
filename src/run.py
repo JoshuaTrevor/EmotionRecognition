@@ -2,6 +2,7 @@ import FitPolys
 import TestData
 import pandas as pd
 import sys
+import os
 import random
 
 dataset_path = "./training_csvs/scaled_dataset.csv"
@@ -13,7 +14,7 @@ df = pd.read_csv(dataset_path)
 
 # If no params, draw 5 random faces
 if len(sys.argv) == 1:
-    for i in range(0, 5):
+    for i in range(0, 3):
         df_length = len(df.index)
         FitPolys.draw_face(df, random.randrange(0, (df_length-1)+1), show_overlap=False)
 
@@ -31,16 +32,12 @@ elif "create" in sys.argv[1].lower():
     print("Done")
 
 elif "train" in sys.argv[1].lower():
-    if(len(sys.argv) == 4):
-        if not sys.argv[3].isdigit():
-            print("The last parameter should be iteration number. eg run.py train dataset_name iterations")
-            exit()
-        if not sys.argv[2].endswith(".csv"):
-            file_dir = sys.argv[2] + ".csv"
-        else:
-            file_dir = sys.argv[2]
-        for i in range(0, int(sys.argv[3])):
-            TestData.train("./training_csvs/{}".format(file_dir))
+    if(len(sys.argv) == 3):
+        for i in range(0, int(sys.argv[2])):
+            
+            for f in os.listdir("./training_csvs/"):
+                print("\nTraining iteration: {} Dataset: {}".format(i, f))
+                TestData.train("./training_csvs/" + f)
     else:
         TestData.train()
 
