@@ -1,5 +1,8 @@
+# Outline
+This project is intended to transform a dataset of facial landmarks into an equivalent representation which instead uses polynomials to represent various curves. In doing so we hope to study the effectiveness of compressing facial expression data for the purpose of optimising machine learning applications.
+
 # Draft User Guide
-## Preqrequisites
+## Prerequisites
 As long as python3, numpy, pandas and matplotlib are all installed there should be no issues.
 
 ## Command line arguments
